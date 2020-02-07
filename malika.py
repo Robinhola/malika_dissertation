@@ -71,14 +71,25 @@ if __name__ == "__main__":
     map_of_participants = map_participants_to_social_first(participants)
     map_of_averages = map_participants_to_averages(participants)
 
-
     new_file = open("a.out", "w")
     new_file.writelines(
         [
-            ",".join(["ParticipantID", *[c.name for c in Categories], "Social/Non-social First"]),
-            "\n",
-            ",".join(["ParticipantID", *[str(c.value) for c in Categories], "Social/Non-social First"]),
-            "\n",
+            ",".join(
+                [
+                    "ParticipantID",
+                    *[c.name for c in Categories],
+                    "Social/Non-social First",
+                ]
+            )
+            + "\n",
+            ",".join(
+                [
+                    "ParticipantID",
+                    *[str(c.value) for c in Categories],
+                    "Social/Non-social First",
+                ]
+            )
+            + "\n",
         ]
     )
 
@@ -90,7 +101,9 @@ if __name__ == "__main__":
             value = averages[c].value
             new_line.append(str(value))
         new_line.append(
-            "Social First" if map_of_participants[participant_id] else "Non-social First"
+            "Social First"
+            if map_of_participants[participant_id]
+            else "Non-social First"
         )
         new_lines.append(",".join(new_line) + "\n")
 

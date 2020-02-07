@@ -25,62 +25,32 @@ class Categories(Enum):
 
 
 def find_category(line: List[str]) -> Categories:
-    if (
-        line[Columns.Social_Non_Social.value] == "Social"
-        and line[Columns.Congruency.value] == "congruent"
-        and line[Columns.Block.value] == "First"
-    ):
-        return Categories.SocialCongruentFirstblock
+    isSocial = line[Columns.Social_Non_Social.value] == "Social"
+    isCongruent = line[Columns.Congruency.value] == "congruent"
+    isFirst = line[Columns.Block.value] == "First"
 
-    if (
-        line[Columns.Social_Non_Social.value] == "Social"
-        and line[Columns.Congruency.value] == "congruent"
-        and line[Columns.Block.value] == "Second"
-    ):
-        return Categories.SocialCongruentSecondblock
-
-    if (
-        line[Columns.Social_Non_Social.value] == "Social"
-        and line[Columns.Congruency.value] == "incongruent"
-        and line[Columns.Block.value] == "First"
-    ):
-        return Categories.SocialIncongruentFirstblock
-
-    if (
-        line[Columns.Social_Non_Social.value] == "Social"
-        and line[Columns.Congruency.value] == "incongruent"
-        and line[Columns.Block.value] == "Second"
-    ):
-        return Categories.SocialIncongruentSecondblock
-
-    if (
-        line[Columns.Social_Non_Social.value] == "Non-Social"
-        and line[Columns.Congruency.value] == "congruent"
-        and line[Columns.Block.value] == "First"
-    ):
-        return Categories.NonSocialCongruentFirstblock
-
-    if (
-        line[Columns.Social_Non_Social.value] == "Non-Social"
-        and line[Columns.Congruency.value] == "congruent"
-        and line[Columns.Block.value] == "Second"
-    ):
-        return Categories.NonSocialCongruentSecondblock
-
-    if (
-        line[Columns.Social_Non_Social.value] == "Non-Social"
-        and line[Columns.Congruency.value] == "incongruent"
-        and line[Columns.Block.value] == "First"
-    ):
-        return Categories.NonSocialIncongruentFirstblock
-
-    if (
-        line[Columns.Social_Non_Social.value] == "Non-Social"
-        and line[Columns.Congruency.value] == "incongruent"
-        and line[Columns.Block.value] == "Second"
-    ):
-        return Categories.NonSocialIncongruentSecondblock
-
+    if isSocial:
+        if isCongruent:
+            if isFirst:
+                return Categories.SocialCongruentFirstblock
+            else:
+                return Categories.SocialCongruentSecondblock
+        else:
+            if isFirst:
+                return Categories.SocialIncongruentFirstblock
+            else:
+                return Categories.SocialIncongruentSecondblock
+    else:
+        if isCongruent:
+            if isFirst:
+                return Categories.NonSocialCongruentFirstblock
+            else:
+                return Categories.NonSocialCongruentSecondblock
+        else:
+            if isFirst:
+                return Categories.NonSocialIncongruentFirstblock
+            else:
+                return Categories.NonSocialIncongruentSecondblock
 
 
 @dataclass
