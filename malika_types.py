@@ -23,40 +23,21 @@ class Categories(Enum):
     NonSocialIncongruentFirstblock = 221
     NonSocialIncongruentSecondblock = 222
 
-
-def find_category(line: List[str]) -> Categories:
-    isSocial = line[Columns.Social_Non_Social.value] == "Social"
-    isCongruent = line[Columns.Congruency.value] == "congruent"
-    isFirst = line[Columns.Block.value] == "First"
-
-    if isSocial:
-        if isCongruent:
-            if isFirst:
-                return Categories.SocialCongruentFirstblock
-            else:
-                return Categories.SocialCongruentSecondblock
-        else:
-            if isFirst:
-                return Categories.SocialIncongruentFirstblock
-            else:
-                return Categories.SocialIncongruentSecondblock
-    else:
-        if isCongruent:
-            if isFirst:
-                return Categories.NonSocialCongruentFirstblock
-            else:
-                return Categories.NonSocialCongruentSecondblock
-        else:
-            if isFirst:
-                return Categories.NonSocialIncongruentFirstblock
-            else:
-                return Categories.NonSocialIncongruentSecondblock
+    @classmethod
+    def from_line(cls, line) -> "Categories":
+        isSocialCode = 100 if line[Columns.Social_Non_Social.value] == "Social" else 200
+        isCongruentCode = 10 if line[Columns.Congruency.value] == "congruent" else 20
+        isFirstCode = 1 if line[Columns.Block.value] == "First" else 2
+        return cls(isSocialCode + isCongruentCode + isFirstCode)
 
 
 @dataclass
 class Average:
     value: float
     trials: int
+
+    def current_total_values(self):
+        return self.value * self.trials
 
 
 @dataclass
@@ -78,5 +59,5 @@ class Participant:
             congruency=line[Columns.Congruency.value] == "congruent",
             sociality=line[Columns.Social_Non_Social.value] == "Social",
             block=line[Columns.Block.value],
-            category=find_category(line),
+            category=Categories.from_line(line),
         )
